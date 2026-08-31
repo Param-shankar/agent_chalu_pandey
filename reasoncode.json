@@ -1,0 +1,35 @@
+{
+  "_source": "https://razorpay.com/docs/payments/disputes/submit-evidence/",
+  "_note": "Slot names match the Razorpay dispute entity evidence object. 'others:<type>' maps to evidence.others[].type",
+  "13.1": {
+    "name": "Merchandise/Services Not Received",
+    "network": "visa",
+    "description": "Customer paid for the order but did not receive the product/service because the business failed to deliver.",
+    "required": [
+      {"doc": "Delivery confirmation with signature", "slot": "shipping_proof", "weight": 3},
+      {"doc": "Tracking information", "slot": "others:tracking_information", "weight": 2},
+      {"doc": "Service completion records", "slot": "proof_of_service", "weight": 2},
+      {"doc": "Digital delivery logs", "slot": "access_activity_log", "weight": 1},
+      {"doc": "Customer acknowledgement", "slot": "customer_communication", "weight": 2}
+    ],
+    "policy_required": [
+      {"doc": "Terms and conditions covering fulfilment", "slot": "term_and_conditions", "weight": 2},
+      {"doc": "Refund and cancellation policy", "slot": "refund_cancellation_policy", "weight": 1}
+    ]
+  },
+  "13.3": {
+    "name": "Not as Described or Defective",
+    "network": "visa",
+    "description": "Customer received a damaged or defective item, or the product significantly differed from the description.",
+    "required": [
+      {"doc": "Product description/images", "slot": "others:product_description", "weight": 3},
+      {"doc": "Quality control records", "slot": "others:quality_control", "weight": 2},
+      {"doc": "Proof no return was received", "slot": "others:no_return_received", "weight": 2},
+      {"doc": "Proof customer did not contact for resolution", "slot": "customer_communication", "weight": 2}
+    ],
+    "policy_required": [
+      {"doc": "Terms and conditions covering returns", "slot": "term_and_conditions", "weight": 2},
+      {"doc": "Refund and cancellation policy", "slot": "refund_cancellation_policy", "weight": 1}
+    ]
+  }
+}
