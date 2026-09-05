@@ -1,35 +1,159 @@
 {
-  "_source": "https://razorpay.com/docs/payments/disputes/submit-evidence/",
-  "_note": "Slot names match the Razorpay dispute entity evidence object. 'others:<type>' maps to evidence.others[].type",
-  "13.1": {
-    "name": "Merchandise/Services Not Received",
-    "network": "visa",
-    "description": "Customer paid for the order but did not receive the product/service because the business failed to deliver.",
-    "required": [
-      {"doc": "Delivery confirmation with signature", "slot": "shipping_proof", "weight": 3},
-      {"doc": "Tracking information", "slot": "others:tracking_information", "weight": 2},
-      {"doc": "Service completion records", "slot": "proof_of_service", "weight": 2},
-      {"doc": "Digital delivery logs", "slot": "access_activity_log", "weight": 1},
-      {"doc": "Customer acknowledgement", "slot": "customer_communication", "weight": 2}
+  "UPI": {
+    "Customer Dispute": [
+      {"code":"1061","title":"Credit Not Processed","description":"Business failed to process credit after customer cancelled/returned goods or services.","documents":["Proof of refund generation","Bank statement showing refund amount matching payment amount","Customer communication showing refund confirmation","Refund policies"]},
+      {"code":"1062","title":"Goods/Services Not As Described","description":"Business delivered product/service that significantly differed from what was advertised.","documents":["Product description/image screenshots","Proof of product/service delivery","Customer communication showcasing dissatisfaction","Return policies"]},
+      {"code":"1064","title":"Goods/Services Not Received","description":"Business failed to deliver product/service despite receiving payment.","documents":["Proof of service/product delivery","Customer interaction re: product/service enquiries","Terms & Conditions on refund & fulfillment policies"]}
     ],
-    "policy_required": [
-      {"doc": "Terms and conditions covering fulfilment", "slot": "term_and_conditions", "weight": 2},
-      {"doc": "Refund and cancellation policy", "slot": "refund_cancellation_policy", "weight": 1}
+    "Fraud": [
+      {"code":"128","title":"Fraudulent Transaction","description":"Business debited customer's account fraudulently.","documents":["Internal logs showing authorisation was obtained","Invoicing details with price breakdown","Proof of service/goods delivery with customer name and address"]}
+    ],
+    "Authorisation Error": [
+      {"code":"108","title":"Remiter Debited but Beneficiary Not Credited","description":"Customer's account debited but beneficiary not credited.","documents":["Proof of service/product delivery","Customer interaction re: enquiries","Customer Withdrawn letter","Terms & Conditions on refund & fulfillment"]},
+      {"code":"1065","title":"Debit on Failed Transaction","description":"System debited account but business received no payment confirmation.","documents":["Proof of service/product delivery","Customer interaction re: enquiries","Customer Withdrawn letter","Terms & Conditions on refund & fulfillment"]},
+      {"code":"121","title":"TCC Raised but Beneficiary is Not Credited","description":"TCC issued but beneficiary's account not credited.","documents":["Proof of service/product delivery","Customer interaction re: enquiries","Customer Withdrawn letter","Terms & Conditions on refund & fulfillment"]}
+    ],
+    "Processing Error": [
+      {"code":"1063","title":"Paid by Other Means","description":"Customer paid via another method yet card was charged in error.","documents":["Proof payment was not received via other method","Refund proof for duplicate charge","Proof claimed transaction was for a different product/service"]},
+      {"code":"1084","title":"Duplicate Processing","description":"Business processed same transaction multiple times.","documents":["System logs proving one transaction per authorisation","Invoicing proving each transaction was separate"]},
+      {"code":"1085","title":"Charge Amount Exceeds Authorisation Amount","description":"Charge exceeded amount customer authorised.","documents":["Invoice with price breakdown","Screenshot of product/service with price details","Authorisation proof of final amount","System logs showing correct amount"]},
+      {"code":"1081","title":"Not Settled Within Timeline","description":"Business did not process transaction within stipulated time.","documents":["Internal logs of timely submission","Time stamp of transaction/processing","Proof of re-auth (if applicable)","Customer authorisation proof","Masked card details and invoice"]}
     ]
   },
-  "13.3": {
-    "name": "Not as Described or Defective",
-    "network": "visa",
-    "description": "Customer received a damaged or defective item, or the product significantly differed from the description.",
-    "required": [
-      {"doc": "Product description/images", "slot": "others:product_description", "weight": 3},
-      {"doc": "Quality control records", "slot": "others:quality_control", "weight": 2},
-      {"doc": "Proof no return was received", "slot": "others:no_return_received", "weight": 2},
-      {"doc": "Proof customer did not contact for resolution", "slot": "customer_communication", "weight": 2}
+  "Visa": {
+    "Customer Dispute": [
+      {"code":"1","title":"Merchandise/Services Not Received","documents":["Delivery confirmation with signature","Tracking information","Service completion records","Digital delivery logs","Customer acknowledgement"]},
+      {"code":"2","title":"Cancelled Recurring Transaction","documents":["Cancellation policy","No cancellation request received","Continued usage logs","Terms of service","Cancellation window proof"]},
+      {"code":"3","title":"Not as Described or Defective","documents":["Product description/images","Quality control records","No return received","Customer did not contact for resolution","Terms and conditions"]},
+      {"code":"4","title":"Counterfeit Merchandise","documents":["Authenticity certificates","Supplier verification","Brand authorisation","Product source documentation","Quality guarantees"]},
+      {"code":"5","title":"Misrepresentation","documents":["Accurate marketing materials","Clear terms display","Customer acknowledgement","No misleading claims proof","Contract terms"]},
+      {"code":"6","title":"Credit Not Processed","documents":["Refund processing proof","Credit timestamp","Return not received","Refund policy compliance","Transaction reversal records"]},
+      {"code":"7","title":"Cancelled Merchandise/Services","documents":["No cancellation received","Cancellation policy terms","Order already processed/shipped","Cancellation window missed","Terms agreement"]},
+      {"code":"8","title":"Original Credit Transaction Not Accepted","documents":["Valid account verification","Compliance with OCT rules","Alternative refund method","Transaction approval records"]}
     ],
-    "policy_required": [
-      {"doc": "Terms and conditions covering returns", "slot": "term_and_conditions", "weight": 2},
-      {"doc": "Refund and cancellation policy", "slot": "refund_cancellation_policy", "weight": 1}
+    "Fraud": [
+      {"code":"1","title":"EMV Liability Shift – Counterfeit Fraud","documents":["EMV compliance certificate","Terminal capability proof","Transaction receipt showing chip read","Authorisation approval","Card-present evidence"]},
+      {"code":"2","title":"EMV Liability Shift – Non-Counterfeit Fraud","documents":["EMV compliance documentation","Terminal logs","Chip transaction data","Authorisation records","PIN verification (if applicable)"]},
+      {"code":"3","title":"Other Fraud – Card-Present Environment","documents":["Signed receipt","EMV/chip data","Security footage timestamp","PIN verification","Authorisation approval","Card imprint (if manual)"]},
+      {"code":"4","title":"Other Fraud – Card-Absent Environment","documents":["AVS match results","CVV2/CVC2 verification","IP address & device fingerprint","Order history","Shipping proof to billing address","3D Secure authentication"]},
+      {"code":"5","title":"Visa Fraud Monitoring Program","documents":["Fraud prevention measures documentation","Transaction authentication records","Compliance improvements","Risk assessment protocols"]}
+    ],
+    "Authorisation Error": [
+      {"code":"1","title":"Card Recovery Bulletin","documents":["Confirmation authorisation not flagged on bulletin","Proof card was valid at transaction time","Terminal records","CRB check documentation"]},
+      {"code":"2","title":"Declined Authorisation","documents":["Valid authorisation approval code","Proof of subsequent approval","Terminal logs showing approved status","Authorisation reversal records"]}
+    ],
+    "Processing Error": [
+      {"code":"2","title":"Incorrect Transaction Code","documents":["Correct transaction records","Processing logs","Customer agreement for transaction type","System configuration proof"]},
+      {"code":"3","title":"Incorrect Currency Code","documents":["Original currency agreement","Display screenshots","Exchange rate disclosure","Customer consent for currency"]},
+      {"code":"4","title":"Incorrect Account Number","documents":["Correct account verification","Customer confirmation","Order records matching account","Payment method selection proof"]},
+      {"code":"5","title":"Incorrect Amount","documents":["Original receipt/invoice","Authorisation for exact amount","Price agreement documentation","Shopping cart screenshot"]},
+      {"code":"6.1","title":"Duplicate Processing – Single Authorisation","documents":["Authorisation logs","Processing records","Transaction IDs","Batch reports showing unique transactions"]},
+      {"code":"6.2","title":"Paid by Other Means","documents":["Proof of single payment method","No alternative payment records","Customer communication","Payment reconciliation"]},
+      {"code":"7","title":"Invalid Data","documents":["Corrected transaction data","Valid processing records","Resubmission documentation","Data integrity proof"]}
+    ]
+  },
+  "Mastercard": {
+    "Customer Dispute": [
+      {"code":"4841","title":"Cancelled Recurring or Digital Goods Transaction","documents":["Cancellation policy","No cancellation received","Service usage after date","Terms of service","Digital access logs"]},
+      {"code":"4850","title":"Installment Billing Dispute","documents":["Installment agreement","Payment schedule","Terms compliance","Customer consent","Billing records"]},
+      {"code":"4853","title":"Cardholder Dispute","documents":["Depends on dispute: delivery proof, quality records, product description, return policy, customer communication"]},
+      {"code":"4854","title":"Cardholder Dispute - Not Elsewhere Classified (NEC)","documents":["Varies by dispute type: general proof of valid transaction/delivery/service/authorisation/customer agreement"]}
+    ],
+    "Fraud": [
+      {"code":"4837","title":"No Cardholder Authorisation","documents":["Cardholder verification","AVS/CVV match","3D Secure","Delivery proof","IP geolocation","Purchase history"]},
+      {"code":"4840","title":"Fraudulent Processing of Transactions","documents":["Fraud screening results","Legitimate transaction proof","Authentication records","Risk assessment","Customer verification"]},
+      {"code":"4849","title":"Questionable Business Activity","documents":["Business legitimacy proof","Clear terms","Customer agreement","Delivery confirmation","Service completion"]},
+      {"code":"4870","title":"Chip Liability Shift","documents":["EMV terminal capability","Chip transaction data","Fallback reason","Terminal certification","Authorisation records"]},
+      {"code":"4871","title":"Chip/PIN Liability Shift","documents":["PIN verification records","Chip + PIN terminal proof","Transaction authentication","Terminal compliance","Fallback documentation"]}
+    ],
+    "Authorisation Error": [
+      {"code":"4808","title":"Authorisation-Related Chargeback","documents":["Valid authorisation code","Correct amount authorisation","Multiple auth prevention","Terminal records","Approval documentation"]}
+    ],
+    "Processing Error": [
+      {"code":"4834","title":"Duplicate Processing","documents":["Single transaction proof","Void/refund for duplicates","Transaction logs","Unique reference numbers","System timestamps"]}
+    ]
+  },
+  "Rupay": {
+    "Customer Dispute": [
+      {"code":"1061","title":"Credit Not Processed","documents":["Proof of refund generation","Bank statement matching payment amount","Customer communication confirming refund","Refund policies"]},
+      {"code":"1062","title":"Goods/Services Not As Described","documents":["Product description/image screenshots","Proof of product delivery","Customer communication of dissatisfaction","Return policies"]},
+      {"code":"1064","title":"Goods/Services Not Received","documents":["Proof of service/product delivery","Customer interaction re: enquiries","Terms & Conditions on refund & fulfillment"]},
+      {"code":"1101","title":"Illegible Fulfilment","documents":["Proof of service/product delivery","Customer interaction re: enquiries","Terms & Conditions on refund & fulfillment"]},
+      {"code":"1102","title":"Retrieval Request Not Fulfilled","documents":["Proof of service/product delivery","Customer interaction re: enquiries","Terms & Conditions on refund & fulfillment"]},
+      {"code":"1103","title":"Invalid Fulfilment","documents":["Proof of service/product delivery","Customer interaction re: enquiries","Terms & Conditions on refund & fulfillment"]}
+    ],
+    "Fraud": [
+      {"code":"1104","title":"Cardholder Does Not Recognise the Transaction","documents":["Invoice with masked card details","Authorisation logs","Invoice with price breakdown","Screenshot of product/service with price","System logs showing correct amount"]},
+      {"code":"1141","title":"Fraudulent Card-Present Transaction","documents":["Transaction details of 2+ non-fraud payments by same customer (if available)","Invoices confirming customer details","Delivery proof per T&C"]},
+      {"code":"1142","title":"Fraudulent Card-Not-Present Transaction","documents":["Transaction details of 2+ non-fraud payments by same customer","2+ matching parameters (device ID, fingerprint, IP)","Invoices confirming customer details","Delivery proof per T&C"]},
+      {"code":"1143","title":"Fraudulent Multiple Transactions","documents":["Transaction details of 2+ non-fraud payments by same customer","2+ matching parameters (device ID, fingerprint, IP)","Invoices confirming customer details","Delivery proof per T&C"]}
+    ],
+    "Authorisation Error": [
+      {"code":"1065","title":"Debit on Failed Transaction","documents":["Proof of service/product delivery","Customer interaction re: enquiries","Customer Withdrawn letter","Terms & Conditions on refund & fulfillment"]},
+      {"code":"1121","title":"Transaction Received Declined Authorisation Response","documents":["Documents showing cardholder authorised transaction","Internal logs with invoices for correct amount","Timestamp of auth creation/approval","Proof of delivery for goods/services"]},
+      {"code":"1122","title":"Transaction Not Authorised","documents":["Documents on authorisation/customer claim details (see docs page for full text)"]}
+    ],
+    "Processing Error": [
+      {"code":"1082","title":"Credit Posted as Debit","documents":["Internal transaction logs proving correct debit","Refund/invoice details if wrong debit was corrected","Invoice for the debit done on cardholder"]},
+      {"code":"1083","title":"Incorrect Transaction Details","documents":["Invoice with masked card details","Authorisation logs","Invoice with price breakdown","Screenshot of product/service with price","System logs showing correct amount"]},
+      {"code":"1084","title":"Duplicate Processing","documents":["System logs proving one transaction per auth","Invoicing proving each transaction was separate"]}
+    ]
+  },
+  "American Express": {
+    "Customer Dispute": [
+      {"code":"C02","title":"Credit Not Processed","documents":["Credit issuance proof","Refund date/amount","Return not received","Policy compliance","Processing confirmation"]},
+      {"code":"C04","title":"Goods/Services Returned or Refused","documents":["Return not received","Refusal not documented","Restocking completed","Return policy terms","Delivery confirmation"]},
+      {"code":"C05","title":"Goods/Services Cancelled","documents":["No cancellation received","Cancellation policy","Already shipped/provided","Cancellation deadline passed","Terms proof"]},
+      {"code":"C08","title":"Goods/Services Not Received","documents":["Delivery confirmation","Tracking proof","Service completion","Digital delivery logs","Customer signature"]},
+      {"code":"C14","title":"Paid by Other Means","documents":["Single payment proof","No alternative payment","Payment reconciliation","Customer communication","Order records"]},
+      {"code":"C18","title":"No Show","documents":["No-show policy disclosure","Cancellation window","Policy agreement","Reservation confirmation","Terms acceptance"]},
+      {"code":"C28","title":"Cancellation of Recurring Goods/Services","documents":["No cancellation received","Cancellation policy","Continued usage","Service access logs","Terms of service"]},
+      {"code":"C31","title":"Goods/Services Not As Described","documents":["Accurate description","Photos/specifications","Quality standards met","No complaint received","Terms compliance"]},
+      {"code":"C32","title":"Goods/Services Damaged or Defective","documents":["Quality control records","No damage claim","Shipping insurance","Packaging adequacy","No return received"]},
+      {"code":"M01","title":"Chargeback Authorisation","documents":["No prior agreement","Chargeback authorisation invalid","Documentation of dispute","No consent given"]},
+      {"code":"M10","title":"Vehicle Rental – Capital Damages","documents":["Damage documentation","Pre-rental inspection","Photos with timestamp","Rental agreement","Insurance coverage"]},
+      {"code":"M49","title":"Vehicle Rental – Theft or Loss of Use","documents":["Police report","Theft documentation","Contract terms","Insurance claims","Loss mitigation efforts"]}
+    ],
+    "Fraud": [
+      {"code":"F10","title":"Missing Imprint","documents":["Card imprint","Electronic authorisation","Card-present proof","Terminal records","Manual processing logs"]},
+      {"code":"F14","title":"Missing Signature","documents":["Signed receipt","Signature on file","PIN verification","Contactless approval","Customer verification"]},
+      {"code":"F24","title":"No Card Member Authorisation","documents":["Authorisation proof","Cardholder verification","AVS/CVV match","3D Secure","Purchase history"]},
+      {"code":"F29","title":"Card Not Present","documents":["AVS/CVV verification","IP address","Device fingerprint","Shipping to billing address","Purchase patterns"]},
+      {"code":"F30","title":"EMV Counterfeit","documents":["EMV terminal proof","Chip data","Authentication records","Terminal capability","Fallback documentation"]},
+      {"code":"F31","title":"EMV Lost/Stolen/Never Received","documents":["EMV compliance","Terminal capability","Chip transaction attempt","Authorisation records","PIN verification"]}
+    ],
+    "Authorisation Error": [
+      {"code":"A01","title":"Charge Amount Exceeds Authorisation Amount","documents":["Authorisation for full amount","Incremental auth records","Customer agreement for additional charges","Receipt showing total"]},
+      {"code":"A02","title":"No Valid Authorisation","documents":["Valid authorisation code","Approval records","Emergency authorisation","Manual approval documentation"]},
+      {"code":"A03","title":"Authorisation Approval Expired","documents":["Current authorisation","Reauthorisation records","Timeline documentation","Settlement timing proof"]}
+    ],
+    "Processing Error": [
+      {"code":"P01","title":"Unassigned Card Number","documents":["Valid card verification","Account confirmation","Authorisation approval","Card authenticity","Number validation"]},
+      {"code":"P03","title":"Credit Processed as Charge","documents":["Transaction type proof","System records","Processing logs","Refund intention","Correction documentation"]},
+      {"code":"P04","title":"Charge Processed as Credit","documents":["Correct transaction type","Processing records","Sale documentation","System logs","Authorisation type"]},
+      {"code":"P05","title":"Incorrect Charge Amount","documents":["Correct amount proof","Receipt/invoice","Customer agreement","Authorisation for amount","Pricing documentation"]},
+      {"code":"P07","title":"Late Submission","documents":["Timely submission proof","System delays","Original date documentation","Processing timeline","Batch records"]},
+      {"code":"P08","title":"Duplicate Charge","documents":["Single charge proof","Transaction logs","Void/refund records","Unique identifiers","System timestamps"]},
+      {"code":"P22","title":"Non-Matching Card Number","documents":["Card number verification","Account match proof","Customer confirmation","Order records","Authorisation match"]},
+      {"code":"P23","title":"Currency Discrepancy","documents":["Currency agreement","Exchange rate disclosure","Original pricing","Customer consent","Display proof"]}
+    ]
+  },
+  "Razorpay": {
+    "Customer Dispute": [
+      {"code":"RZP06","title":"Business Not Responding","documents":["Proof of delivery in committed timeline","Invoicing details with amount/date-time","Customer communications over email (not WhatsApp)"]},
+      {"code":"RZP05","title":"Account Debited but No Confirmation","documents":["Service/product invoice if payment captured","Internal logs proving payment failed","Customer interaction re: enquiries","Terms & Conditions on refund & fulfillment"]},
+      {"code":"RZP01","title":"Goods/Services not Provided","documents":["Proof of service/product delivery","Customer interaction re: enquiries","Terms & Conditions on refund & fulfillment"]},
+      {"code":"RZP04","title":"Refund not Processed","documents":["Proof of refund generation","Bank statement matching payment amount","Customer communication confirming refund","Refund policies"]},
+      {"code":"RZP00","title":"Not Available","documents":["Proof of delivery in committed timeline","Invoicing details with amount/date-time","Customer communications over email","Refund details (if already refunded)"]}
+    ],
+    "Fraud": [
+      {"code":"RZP03","title":"Potential Fraud","documents":["System logs proving payment was authorised","Invoicing details of product/services","(CNP) details of 2+ non-fraud prior transactions with matching IP/device fingerprint/device ID","(CP) EMV transaction data proving customer participation"]}
+    ],
+    "Authorisation Error": [
+      {"code":"RZP02","title":"Unauthorised Transaction","documents":["System logs proving payment was authorised","Invoicing details with delivery proof","(CNP) details of 2+ non-fraud prior transactions with matching parameters","(CP) EMV transaction data proving customer participation"]}
+    ],
+    "Processing Error": [
+      {"code":"RZP07","title":"Invalid Data","documents":["Data showing transaction was authorised by processor using valid data","Valid data: masked card details, 2FA details, customer name, date-time"]}
     ]
   }
 }
